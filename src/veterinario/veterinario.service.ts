@@ -19,7 +19,7 @@ export class VeterinarioService {
     data.push(newVet);
 
     fs.writeFile(DATA_PATH, JSON.stringify(data));
-    return ('Verterinario Creado');
+    return (`Verterinario ${createVeterinarioDto.name} creado`);
   }
 
   async findAll() {
@@ -31,15 +31,28 @@ export class VeterinarioService {
     return taskList;
   }
 
-  findOne(id: number) {
-    const data = this.findAll();
+  async findOne(id: string) {
+    const data = await this.findAll();
+    return data.find(vet => vet.id == id);
   }
 
-  update(id: number, updateVeterinarioDto: UpdateVeterinarioDto) {
-    return `This action updates a #${id} veterinario`;
+  async update(id: string, updateVeterinarioDto: UpdateVeterinarioDto) {
+    const data = await this.findAll();
+    const vetToUpdate = data.find(vet => vet.id == id);
+    const indexToUpdate = data.findIndex(vet => vet.id == id);
+    data[indexToUpdate] = {...data[indexToUpdate], ...updateVeterinarioDto}
+    fs.writeFile(DATA_PATH, JSON.stringify(data))
+    return(`Veterinario ${vetToUpdate.name} modificado`);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} veterinario`;
+  async remove(id: string) {
+    const data = await this.findAll();
+    const vetToDelete = data.find(vet => vet.id == id);
+    const indexToDelete = data.findIndex(vet => vet.id == id);
+    data.splice(indexToDelete,1)
+    fs.writeFile(DATA_PATH, JSON.stringify(data))
+    return (`Veterinario ${vetToDelete.name} eliminado`);
+
+
   }
 }

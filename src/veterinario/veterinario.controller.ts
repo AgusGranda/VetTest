@@ -19,16 +19,16 @@ export class VeterinarioController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.veterinarioService.findOne(+id);
+    return this.veterinarioService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateVeterinarioDto: UpdateVeterinarioDto) {
-    return this.veterinarioService.update(+id, updateVeterinarioDto);
+    return this.veterinarioService.update(id, updateVeterinarioDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.veterinarioService.remove(+id);
+    return this.veterinarioService.remove(id);
   }
 }
